@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>혜택온 | 매일 가는 편의점, 매일 아끼는 구독</title>
+  <style>
+    :root {
+      --navy: #101e4d;
+      --navy-deep: #091335;
+      --blue: #2f66ff;
+      --sky: #eaf0ff;
+      --ink: #172033;
+      --muted: #59637a;
+      --line: #dfe4ef;
+      --surface: #ffffff;
+      --cream: #f7f9ff;
+      --accent: #ffd35a;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--surface);
+      font-family: system-ui, -apple-system, "Apple SD Gothic Neo", "Nanum Gothic", sans-serif;
+      word-break: keep-all;
+    }
+    button { font: inherit; }
+    .container { width: min(100% - 40px, 1080px); margin: 0 auto; }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 28px 0 76px;
+      color: #fff;
+      background: var(--navy);
+    }
+    .hero::before, .hero::after {
+      position: absolute;
+      content: "";
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero::before { width: 420px; height: 420px; right: -150px; top: -175px; background: rgba(58, 107, 255, .32); }
+    .hero::after { width: 270px; height: 270px; left: -155px; bottom: -175px; background: rgba(255, 211, 90, .12); }
+    .topbar, .hero-content { position: relative; z-index: 1; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; }
+    .brand { margin: 0; font-size: 1.25rem; font-weight: 850; letter-spacing: -0.04em; }
+    .brand span { color: var(--accent); }
+    .hero-content { max-width: 700px; padding-top: 82px; }
+    .eyebrow { display: inline-block; margin-bottom: 18px; color: #dce5ff; font-size: .9rem; font-weight: 700; }
+    h1 { margin: 0; font-size: clamp(2.3rem, 7vw, 4.5rem); line-height: 1.17; letter-spacing: -0.065em; }
+    .hero-copy { max-width: 570px; margin: 22px 0 32px; color: #e3e9ff; font-size: clamp(1rem, 2.8vw, 1.2rem); line-height: 1.7; }
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 54px;
+      padding: 14px 23px;
+      border: 0;
+      border-radius: 14px;
+      color: var(--navy-deep);
+      background: var(--accent);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, .18);
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 800;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .cta:hover, .cta:focus-visible { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(0, 0, 0, .24); }
+    .notice {
+      display: none;
+      margin: 18px 0 0;
+      padding: 13px 16px;
+      border-radius: 12px;
+      color: #fff;
+      background: rgba(255, 255, 255, .16);
+      font-weight: 700;
+    }
+    .notice.show { display: inline-block; animation: appear .25s ease-out; }
+    @keyframes appear { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+    section { padding: 82px 0; }
+    .section-kicker { margin: 0 0 10px; color: var(--blue); font-size: .9rem; font-weight: 800; }
+    h2 { margin: 0; font-size: clamp(1.85rem, 5vw, 2.8rem); letter-spacing: -0.055em; line-height: 1.25; }
+    .section-head { margin-bottom: 34px; }
+    .feature-grid, .price-grid { display: grid; gap: 18px; grid-template-columns: repeat(3, 1fr); }
+    .feature-card {
+      min-height: 255px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: #fff;
+    }
+    .feature-number { display: flex; width: 42px; height: 42px; align-items: center; justify-content: center; margin-bottom: 25px; border-radius: 13px; color: var(--blue); background: var(--sky); font-weight: 850; }
+    h3 { margin: 0 0 13px; font-size: 1.2rem; letter-spacing: -0.04em; }
+    .feature-card p, .plan p { margin: 0; color: var(--muted); line-height: 1.68; font-size: .96rem; }
+    .feature-card p + p { margin-top: 10px; }
+
+    .pricing { background: var(--cream); }
+    .plan {
+      display: flex;
+      flex-direction: column;
+      min-height: 350px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: #fff;
+    }
+    .plan.recommended { position: relative; border: 2px solid var(--blue); box-shadow: 0 16px 34px rgba(47, 102, 255, .14); }
+    .recommend-label { position: absolute; top: -14px; left: 22px; padding: 6px 10px; border-radius: 999px; color: #fff; background: var(--blue); font-size: .78rem; font-weight: 800; }
+    .plan h3 { margin-top: 3px; }
+    .price { margin: 10px 0 21px; font-size: 2.1rem; font-weight: 850; letter-spacing: -0.07em; }
+    .plan dl { margin: auto 0 0; padding-top: 20px; border-top: 1px solid var(--line); }
+    .plan dt { margin-top: 15px; color: var(--muted); font-size: .82rem; font-weight: 750; }
+    .plan dt:first-child { margin-top: 0; }
+    .plan dd { margin: 5px 0 0; font-size: .92rem; line-height: 1.55; }
+
+    .faq-list { border-top: 1px solid var(--line); }
+    details { border-bottom: 1px solid var(--line); }
+    summary { position: relative; padding: 22px 34px 22px 0; cursor: pointer; list-style: none; font-size: 1.02rem; font-weight: 780; line-height: 1.45; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { position: absolute; top: 19px; right: 6px; content: "+"; color: var(--blue); font-size: 1.45rem; font-weight: 400; }
+    details[open] summary::after { content: "−"; }
+    details p { margin: 0; padding: 0 30px 22px 0; color: var(--muted); line-height: 1.7; }
+
+    .final-cta { padding: 76px 0; color: #fff; text-align: center; background: var(--navy-deep); }
+    .final-cta h2 { max-width: 650px; margin: 0 auto 27px; }
+    .final-cta .notice { background: rgba(255, 255, 255, .14); }
+    footer { padding: 25px 20px; color: var(--muted); background: #f4f5f8; text-align: center; font-size: .82rem; line-height: 1.6; }
+
+    @media (max-width: 760px) {
+      .container { width: min(100% - 32px, 1080px); }
+      .hero { padding-bottom: 60px; }
+      .hero-content { padding-top: 70px; }
+      section { padding: 60px 0; }
+      .feature-grid, .price-grid { grid-template-columns: 1fr; }
+      .feature-card { min-height: 0; }
+      .plan { min-height: 0; }
+      .price-grid { gap: 26px; }
+      .cta { width: 100%; }
+      .notice { width: 100%; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <div class="topbar"><p class="brand">혜택<span>ON</span></p></div>
+      <div class="hero-content">
+        <span class="eyebrow">Hyetaek-ON</span>
+        <h1>매일 가는 편의점,<br>매일 아끼는 구독 — 혜택온</h1>
+        <p class="hero-copy">커피부터 도시락까지, 월 구독 한 번으로 등굣길 소비가 달라집니다.</p>
+        <button class="cta" type="button" data-apply>지금 무료 체험 시작하기 (첫 달 0원)</button>
+        <p class="notice" role="status" data-notice>신청접수(데모)</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section aria-labelledby="features-title">
+      <div class="container">
+        <div class="section-head"><p class="section-kicker">혜택</p><h2 id="features-title">매일 가는 편의점에서<br>더 가볍게 쓰는 방법</h2></div>
+        <div class="feature-grid">
+          <article class="feature-card"><div class="feature-number">01</div><h3>매일 커피 구독</h3><p>월 4,900원으로 아메리카노를 매일 1잔 40% 할인</p><p>출근길·등교길 커피값 부담을 절반으로</p></article>
+          <article class="feature-card"><div class="feature-number">02</div><h3>점심 도시락 구독</h3><p>월 3,900원으로 도시락·샌드위치를 매일 1개 20% 할인</p><p>시험 기간 식비 방어의 필수템</p></article>
+          <article class="feature-card"><div class="feature-number">03</div><h3>앱에서 3초 사용</h3><p>결제도 사용도 앱 바코드 하나로 끝</p><p>이번 달 아낀 금액을 앱에서 실시간 확인</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="pricing" aria-labelledby="pricing-title">
+      <div class="container">
+        <div class="section-head"><p class="section-kicker">요금표</p><h2 id="pricing-title">내 소비에 맞춰 고르는 플랜</h2></div>
+        <div class="price-grid">
+          <article class="plan"><h3>커피 플랜</h3><div class="price">4,900원</div><dl><dt>주요 혜택</dt><dd>아메리카노 매일 1잔 40% 할인</dd><dt>추천 대상</dt><dd>매일 커피 마시는 통학러</dd></dl></article>
+          <article class="plan"><h3>도시락 플랜</h3><div class="price">3,900원</div><dl><dt>주요 혜택</dt><dd>도시락·샌드위치 매일 1개 20% 할인</dd><dt>추천 대상</dt><dd>점심을 편의점에서 해결하는 자취생</dd></dl></article>
+          <article class="plan recommended"><span class="recommend-label">추천 플랜</span><h3>올인원 플랜</h3><div class="price">7,900원</div><dl><dt>주요 혜택</dt><dd>커피+도시락 혜택 전부</dd><dt>추천 대상</dt><dd>하루 두 번 이상 방문하는 헤비 유저</dd></dl></article>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="faq-title">
+      <div class="container">
+        <div class="section-head"><p class="section-kicker">FAQ</p><h2 id="faq-title">자주 묻는 질문</h2></div>
+        <div class="faq-list">
+          <details><summary>Q1. 해지는 어떻게 하나요?</summary><p>A1. 앱의 '내 구독' 화면에서 버튼 한 번으로 즉시 해지됩니다. 남은 기간 혜택은 만료일까지 유지됩니다.</p></details>
+          <details><summary>Q2. 할인 혜택을 하루에 여러 번 쓸 수 있나요?</summary><p>A2. 플랜별로 하루 1회 사용이 원칙이며, 올인원 플랜은 커피 1회와 도시락 1회를 각각 사용할 수 있습니다.</p></details>
+          <details><summary>Q3. 모든 매장에서 사용할 수 있나요?</summary><p>A3. 전국 제휴 매장에서 사용 가능하며, 앱 지도에서 가까운 제휴 매장을 확인할 수 있습니다.</p></details>
+          <details><summary>Q4. 구독료가 아깝지 않을까요?</summary><p>A4. 커피 플랜 기준 월 4회만 사용해도 구독료 이상을 아끼게 됩니다. 앱의 '절약 리포트'가 매달 아낀 금액을 계산해 드립니다.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta" aria-label="무료 체험 신청">
+      <div class="container">
+        <h2>매일 가는 편의점,<br>오늘부터 더 아껴보세요.</h2>
+        <button class="cta" type="button" data-apply>지금 무료 체험 시작하기 (첫 달 0원)</button>
+        <p class="notice" role="status" data-notice>신청접수(데모)</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>혜택온은 인공지능과경영 수업 실습용 가상 서비스입니다.</footer>
+  <script>
+    document.querySelectorAll('[data-apply]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        document.querySelectorAll('[data-notice]').forEach(function (notice) {
+          notice.classList.add('show');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
